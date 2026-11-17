@@ -44,6 +44,16 @@ The tools listed are the ones a good answer calls.
 | 16 | I'm wallet `<your wallet>`. Which of my GONDI loans should I renegotiate? | `list_borrower_loans` |
 | 17 | I'm wallet `<your wallet>`. What good borrowing opportunities do I have on GONDI? | `list_borrowing_opportunities` |
 | 18 | What's the cheapest loan I can get against a Pudgy Penguin on GONDI? | `search_gondi`, `list_loan_offers` |
+| 19 | What did Fidenza sell for in the last 7 days on GONDI? | `search_gondi`, `list_recent_sales` |
+| 20 | How has the Pudgy Penguins floor moved over the last 90 days? | `search_gondi`, `get_floor_price_history` |
+| 21 | What are the top NFT collections on GONDI this week, and what's trending today? | `list_top_collections` |
+| 22 | What is vitalik.eth's NFT wallet worth? | `get_wallet_holdings` |
+| 23 | How much can I borrow against Milady #1234 on GONDI? | `search_gondi`, `get_borrow_quote` |
+| 24 | What would it cost to buy Azuki #42 with a loan on GONDI? | `search_gondi`, `get_buy_with_loan_quote` |
+| 25 | Should I sell my Pudgy Penguin #100 or borrow against it? | `search_gondi`, `get_nft_market`, `get_borrow_quote` |
+| 26 | Where do I pay the lowest fees to sell a Fidenza, GONDI or OpenSea? | `search_gondi`, `get_collection_market` |
+| 27 | If I accept the top bid on Milady #1234 on GONDI, what do I keep? | `search_gondi`, `get_nft_market` |
+| 28 | What fees does GONDI charge to buy, sell or buy with a loan? | `get_lending_guide` |
 
 Found a wrong answer? [Open an issue](https://github.com/gondixyz/mcp/issues/new/choose)
 with the question number and what the assistant said.

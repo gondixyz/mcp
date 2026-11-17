@@ -5,9 +5,11 @@ built in. On Ethereum, Hyperliquid (HyperEVM) and Robinhood Chain you buy, sell,
 list and bid on NFTs, and borrow or lend against them.
 
 The GONDI MCP server gives AI assistants live GONDI data through the
-[Model Context Protocol](https://modelcontextprotocol.io): floor prices, top bids
-and the cheapest listings, loan offers and lending rates, a borrower's open loans
-and what their NFTs can borrow, top lenders and their returns. Add it to your
+[Model Context Protocol](https://modelcontextprotocol.io): floor prices, top bids,
+the cheapest listings, recent sales and floor history, the top and trending
+collections, marketplace fees, what a wallet is worth, loan offers and lending
+rates, a borrower's open loans, what their NFTs can borrow and what buying with a
+loan costs, top lenders and their returns. Add it to your
 assistant once, then ask questions in plain language.
 
 This repository describes the hosted server and is the place to report problems
@@ -89,7 +91,7 @@ at `https://api.gondi.xyz/mcp` with no authentication.
 
 ## Tools
 
-The server offers 14 tools. Tools that take a slug get it from `search_gondi`
+The server offers 20 tools. Tools that take a slug get it from `search_gondi`
 rather than guessing it. Wallet tools take an address, a GONDI username or an ENS
 name. Chains are `ethereum`, `hyperliquid` and `robinhood`; currencies are
 `WETH`, `USDC`, `WHYPE`, `HUSDC`, `RWETH` and `USDG`. Your client shows each
@@ -105,9 +107,14 @@ tool's full description and input schema.
 
 | Tool | What it answers |
 | --- | --- |
-| `get_collection_market` | A collection's floor price and top collection bid, in its currency and in USD. |
-| `get_nft_market` | One NFT's listing price, top bid, last sale, estimated value, and whether it is collateral in an open loan. |
+| `get_collection_market` | A collection's floor price and top collection bid, in its currency and in USD, and its fees to sell and buy on GONDI against OpenSea. |
+| `get_nft_market` | One NFT's listing price, top bid, last sale, estimated value, whether it is collateral in an open loan, and what the seller keeps on GONDI against OpenSea. |
 | `list_cheapest_for_sale` | The cheapest NFTs for sale from a collection or by an artist, with the page to buy each. |
+| `list_recent_sales` | The latest sales of a collection or one NFT, with price, marketplace, buyer and seller, and the period's min, median and max price. |
+| `get_floor_price_history` | How a collection's floor moved over 7 to 365 days, one point a day, with the change in percent. |
+| `list_top_collections` | The top and trending collections, by volume, sales, trending, market cap or floor change. |
+
+Every listing and bid the market tools answer carries `gondi_fee_percent`.
 
 ### Lending
 
@@ -115,9 +122,9 @@ tool's full description and input schema.
 | --- | --- |
 | `get_lending_market_overview` | The whole lending market in USD: open principal, interest paid and accruing, volume and APRs of new loans. |
 | `get_supported_markets` | The chains and currencies GONDI lends in, the loan contract on each chain, accepted durations and the protocol fee. |
-| `get_lending_guide` | How lending on GONDI works, step by step, with its risks. |
+| `get_lending_guide` | How lending on GONDI works, step by step, with its risks and fees. |
 | `list_lending_opportunities` | Collections borrowers take loans against, ranked by open principal, loans, offers or volume. |
-| `get_collection_lending_stats` | One collection's lending picture: open loans, repayment rate, principal lent, and the ranges of its loan terms. |
+| `get_collection_lending_stats` | How much is lent against a collection (outstanding, all time and over 30 days), its open loans, repayment rate and the ranges of its loan terms. |
 | `list_loan_offers` | Active loan offers: principal, APR and duration; sorted by lowest APR, the cheapest loan a borrower can take. |
 | `get_top_lenders` | The leading lenders over 30, 90 or 180 days, with open principal, earnings, net APR and default rate. |
 | `get_lender_returns` | One lender's record per currency: principal lent, net profit, net APR, defaults and open positions. |
@@ -126,8 +133,32 @@ tool's full description and input schema.
 
 | Tool | What it answers |
 | --- | --- |
-| `list_borrower_loans` | A borrower's open loans: due dates, repayment due, and the renegotiation or market offers that could make them cheaper. |
-| `list_borrowing_opportunities` | The NFTs a wallet holds that are not in a loan, each with the largest loan offer it can take today. |
+| `list_borrower_loans` | A borrower's open loans, counted and ranked: due dates, repayment due, and the renegotiation or market offers that could make them cheaper. |
+| `list_borrowing_opportunities` | The NFTs a wallet holds that are not in a loan, with the largest offer each can take today; NFTs sharing an offer come as one row, with how many it can fund. |
+| `get_borrow_quote` | How much one NFT can borrow right now: its largest offer and its cheapest-APR offer. |
+| `get_buy_with_loan_quote` | What buying a listed NFT with a loan costs: the upfront payment, the loan's terms and repayment, and the fee. |
+
+### Wallet
+
+| Tool | What it answers |
+| --- | --- |
+| `get_wallet_holdings` | What a wallet's NFTs are worth in ETH and USD, where it holds them, its most valuable collections, and what it owes as a borrower. |
+
+## Fees
+
+The tools answer GONDI's marketplace fees, as of November 2026:
+
+- A regular GONDI sale costs the seller 0.5% of the price, against OpenSea's
+  1.0% (OpenSea's rate since 2025-09-15).
+- Buyers pay no GONDI fee: a GONDI listing costs its price, and a bidder on a
+  regular bid pays exactly the bid.
+- A stealth listing costs the seller 2.0%, and a stealth bid adds 0.5% on top of
+  the bid, paid by the bidder, while its seller pays 0.5%.
+- Buying with a loan adds 2.0% to the price, paid by the buyer. Selling an NFT
+  that is collateral in a loan to repay it (sell and repay) costs the seller
+  2.0%.
+- CryptoPunks pay no GONDI sale fee.
+- Buying an OpenSea listing through GONDI costs the same as on OpenSea.
 
 ## Example questions
 
@@ -135,6 +166,15 @@ tool's full description and input schema.
 - "What's the top bid on Milady #1234, and what is it listed for?"
 - "Show me the five cheapest CryptoPunks for sale."
 - "What's the cheapest piece for sale by XCOPY?"
+- "What did Fidenza sell for this week?"
+- "How has the Pudgy Penguins floor moved over the last 90 days?"
+- "What are the top NFT collections right now, and what's trending today?"
+- "What is vitalik.eth's NFT wallet worth?"
+- "How much can I borrow against Milady #1234?"
+- "What would it cost to buy Azuki #42 with a loan?"
+- "Should I sell my Pudgy Penguin or borrow against it?"
+- "Where do I pay the lowest fees to sell a Fidenza, GONDI or OpenSea?"
+- "If I accept the top bid on my Milady, what do I keep?"
 - "Which of my loans expire this week?" (give your address, GONDI username or
   ENS name)
 - "Which of my loans should I renegotiate?"
