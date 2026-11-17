@@ -3,8 +3,12 @@
   "name": "xyz.gondi/mcp",
   "title": "GONDI",
   "description": "GONDI NFT marketplace: live prices, bids, listings, sales, lending and borrowing data for AI agents.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "websiteUrl": "https://www.gondi.xyz",
+  "repository": {
+    "url": "https://github.com/gondixyz/mcp",
+    "source": "github"
+  },
   "remotes": [
     {
       "type": "streamable-http",
