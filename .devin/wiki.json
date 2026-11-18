@@ -1,0 +1,44 @@
+{
+  "repo_notes": [
+    {
+      "content": "This repository documents the GONDI MCP server and is where problems with it are reported. It contains no server source code: only README.md, server.json (the MCP Registry manifest), eval/questions.md, the issue templates, the LICENSE (MIT) and two configuration files for documentation indexers (context7.json and .devin/wiki.json). The server is hosted by GONDI at https://api.gondi.xyz/mcp; there is nothing to install, build or run from this repository. Do not describe an implementation, architecture, dependencies or build steps, since none are in the repository."
+    },
+    {
+      "content": "GONDI (https://www.gondi.xyz) is an NFT marketplace with peer-to-peer lending built in, on Ethereum, Hyperliquid (HyperEVM) and Robinhood Chain. Users buy, sell, list and bid on NFTs, and borrow or lend against them. Always describe GONDI as a marketplace with lending, not as a lending protocol only."
+    },
+    {
+      "content": "The server is read-only and needs no authentication: no API key and no wallet. It uses the Streamable HTTP transport, never signs or sends transactions, and is rate-limited per IP address. Its MCP Registry name is xyz.gondi/mcp. Take tool names, tool descriptions, fees, chains and currencies from README.md exactly as written; do not add tools or parameters that the README does not list."
+    }
+  ],
+  "pages": [
+    {
+      "title": "Overview",
+      "purpose": "What GONDI is, what the GONDI MCP server gives an AI assistant (live marketplace, lending, borrowing and wallet data), the endpoint table (URL, transport, authentication, access, MCP Registry name), what this repository contains, and the links from the README's Links section."
+    },
+    {
+      "title": "Connecting a client",
+      "purpose": "How to add the server to each client the README covers: Claude (claude.ai and Claude Desktop), Claude Code, Cursor, VS Code, ChatGPT and any other client that supports remote MCP servers over Streamable HTTP. Reproduce the commands and JSON snippets from the README's Setup section."
+    },
+    {
+      "title": "Tools",
+      "purpose": "The server's tools grouped as in the README (Search, Market, Lending, Borrowing, Wallet) with what each one answers, plus the shared conventions: slugs come from search_gondi, wallet tools take an address, a GONDI username or an ENS name, and the supported chains and currencies."
+    },
+    {
+      "title": "Marketplace fees",
+      "parent": "Tools",
+      "purpose": "The GONDI marketplace fees the tools answer, as listed in the README's Fees section, including the comparison with OpenSea and the date the README gives for them."
+    },
+    {
+      "title": "Example questions and evals",
+      "purpose": "The example questions from the README, and eval/questions.md: how to run the eval questions against the server, which tools a good answer is expected to call for each question, and how to check an answer against gondi.xyz."
+    },
+    {
+      "title": "Limits and reporting problems",
+      "purpose": "The limits from the README (read-only, no API key and per-IP rate limiting, live data, not financial advice) and how to report a wrong answer or request a tool through the repository's issue templates."
+    },
+    {
+      "title": "MCP Registry manifest",
+      "purpose": "What server.json declares: the registry name, title, description, version, website, repository and the streamable-http remote, and how it relates to the MCP Registry entry and the server card linked from the README."
+    }
+  ]
+}

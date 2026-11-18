@@ -1,0 +1,15 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "GONDI MCP Server",
+  "description": "Hosted, read-only Model Context Protocol server that gives AI assistants live data from GONDI, an NFT marketplace with peer-to-peer lending: prices, bids, listings, sales, lending and borrowing. This repository holds its README, registry manifest and eval questions.",
+  "excludeFolders": [".github"],
+  "excludeFiles": ["LICENSE"],
+  "rules": [
+    "The server is hosted at https://api.gondi.xyz/mcp over streamable HTTP: there is nothing to install or run.",
+    "It needs no authentication: no API key and no wallet. Requests are rate-limited per IP address.",
+    "It is read-only: no tool holds keys, signs or sends transactions. Users act with their own wallet on https://www.gondi.xyz.",
+    "Tools that take a slug get it from search_gondi rather than guessing it.",
+    "Chains are ethereum, hyperliquid and robinhood; currencies are WETH, USDC, WHYPE, HUSDC, RWETH and USDG.",
+    "The full GONDI documentation, including the MCP server page, is at https://docs.gondi.xyz."
+  ]
+}
