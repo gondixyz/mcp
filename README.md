@@ -95,6 +95,87 @@ on what its admins allow.
 Any client that supports remote MCP servers over streamable HTTP works: point it
 at `https://api.gondi.xyz/mcp` with no authentication.
 
+### Agent frameworks
+
+A framework with its own MCP client loads the server directly; it needs no GONDI
+plugin. Each snippet below connects and lists the tools.
+
+**ElizaOS** (2.x, with `@elizaos/plugin-mcp`), in the character's settings:
+
+```json
+{
+  "plugins": ["@elizaos/plugin-mcp"],
+  "settings": {
+    "mcp": {
+      "servers": {
+        "gondi": {
+          "type": "streamable-http",
+          "url": "https://api.gondi.xyz/mcp"
+        }
+      }
+    }
+  }
+}
+```
+
+The type must be `streamable-http`: in that plugin, `http` selects the older SSE
+transport.
+
+**Vercel AI SDK** (`@ai-sdk/mcp`):
+
+```ts
+import { createMCPClient } from "@ai-sdk/mcp";
+
+const client = await createMCPClient({
+  transport: { type: "http", url: "https://api.gondi.xyz/mcp" },
+});
+const tools = await client.tools();
+```
+
+Pass `tools` to `generateText` or `streamText`, and call `client.close()` when
+done.
+
+**LangChain** (`@langchain/mcp-adapters`):
+
+```ts
+import { MCPAdapter } from "@langchain/mcp-adapters";
+
+const adapter = new MCPAdapter({
+  servers: {
+    gondi: { url: "https://api.gondi.xyz/mcp" },
+  },
+});
+const tools = await adapter.listTools();
+```
+
+Pass `tools` to `createAgent`, and call `adapter.close()` when done. The adapter
+prefixes each tool's name with the server's: `gondi_search_gondi`.
+
+**OpenAI Agents SDK** (`openai-agents`, Python):
+
+```python
+from agents import Agent
+from agents.mcp import MCPServerStreamableHttp
+
+async with MCPServerStreamableHttp(
+    name="gondi", params={"url": "https://api.gondi.xyz/mcp"}
+) as server:
+    agent = Agent(name="Assistant", mcp_servers=[server])
+    tools = await server.list_tools()
+```
+
+Coinbase AgentKit and GOAT are toolkits that plug into these frameworks (both
+ship LangChain and Vercel AI SDK adapters), so an agent built on either adds the
+GONDI server through its framework's MCP client, as above.
+
+### Agent skill
+
+[`skills/gondi/SKILL.md`](skills/gondi/SKILL.md) is an
+[Agent Skill](https://agentskills.io) for OpenClaw and other agents that load
+skills: when to use the server, how to call it with or without an MCP client,
+each tool with its arguments, and example calls. It lists the same tools as this
+README and changes whenever they change.
+
 ## Tools
 
 The server offers 20 tools. Tools that take a slug get it from `search_gondi`
@@ -189,7 +270,7 @@ The tools answer GONDI's marketplace fees, as of November 2026:
 - "What APR can I earn lending against Pudgy Penguins?"
 - "Which collections are best to lend against?"
 - "Who are the top lenders this month and what do they earn?"
-- "What are mishark's lending returns?"
+- "What are my lending returns?"
 - "How does GONDI lending work and what are the risks?"
 
 [`eval/questions.md`](eval/questions.md) has the list we check answers against,

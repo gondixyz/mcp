@@ -1,7 +1,7 @@
 {
   "repo_notes": [
     {
-      "content": "This repository documents the GONDI MCP server and is where problems with it are reported. It contains no server source code: only README.md, server.json (the MCP Registry manifest), eval/questions.md, the issue templates, the LICENSE (MIT) and two configuration files for documentation indexers (context7.json and .devin/wiki.json). The server is hosted by GONDI at https://api.gondi.xyz/mcp; there is nothing to install, build or run from this repository. Do not describe an implementation, architecture, dependencies or build steps, since none are in the repository."
+      "content": "This repository documents the GONDI MCP server and is where problems with it are reported. It contains no server source code: only README.md, server.json (the MCP Registry manifest), eval/questions.md, skills/gondi/SKILL.md (an Agent Skill that tells agents how to call the server), the issue templates, the LICENSE (MIT) and two configuration files for documentation indexers (context7.json and .devin/wiki.json). The server is hosted by GONDI at https://api.gondi.xyz/mcp; there is nothing to install, build or run from this repository. Do not describe an implementation, architecture, dependencies or build steps, since none are in the repository."
     },
     {
       "content": "GONDI (https://www.gondi.xyz) is an NFT marketplace with peer-to-peer lending built in, on Ethereum, Hyperliquid (HyperEVM) and Robinhood Chain. Users buy, sell, list and bid on NFTs, and borrow or lend against them. Always describe GONDI as a marketplace with lending, not as a lending protocol only."

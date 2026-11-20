@@ -3,7 +3,7 @@
   "url": "https://context7.com/gondixyz/mcp",
   "public_key": "pk_Tt1gSJiee9YlHSAkLtKyO",
   "projectTitle": "GONDI MCP Server",
-  "description": "Hosted, read-only Model Context Protocol server that gives AI assistants live data from GONDI, an NFT marketplace with peer-to-peer lending: prices, bids, listings, sales, lending and borrowing. This repository holds its README, registry manifest and eval questions.",
+  "description": "Hosted, read-only Model Context Protocol server that gives AI assistants live data from GONDI, an NFT marketplace with peer-to-peer lending: prices, bids, listings, sales, lending and borrowing. This repository holds its README, an agent skill for calling it, its registry manifest and eval questions.",
   "excludeFolders": [".github"],
   "excludeFiles": ["LICENSE"],
   "rules": [
