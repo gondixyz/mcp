@@ -14,9 +14,10 @@ them yourself to reproduce an answer, or to check a fix.
    ```
 
 2. Ask each question in a new conversation.
-3. For questions 15 to 17, replace `<your wallet>` with an address, GONDI
-   username or ENS name. Questions 15 and 16 need a wallet with open loans as a
-   borrower; question 17 needs a wallet that holds NFTs not already in a loan.
+3. For questions 14 to 17, replace `<your wallet>` with an address, GONDI
+   username or ENS name. Question 14 needs a wallet that has lent on GONDI;
+   questions 15 and 16 need a wallet with open loans as a borrower; question 17
+   needs a wallet that holds NFTs not already in a loan.
 4. Check the answer against the same page on [gondi.xyz](https://www.gondi.xyz).
    Answers are live data, so numbers change between runs.
 
@@ -39,7 +40,7 @@ The tools listed are the ones a good answer calls.
 | 11 | What's the top bid on CryptoPunk #1234 on GONDI? | `search_gondi`, `get_nft_market` |
 | 12 | What's the cheapest Fidenza for sale on GONDI? | `search_gondi`, `list_cheapest_for_sale` |
 | 13 | What's the cheapest NFT for sale by XCOPY on GONDI? | `search_gondi`, `list_cheapest_for_sale` |
-| 14 | What are mishark's lending returns on GONDI? | `get_lender_returns` |
+| 14 | I'm wallet `<your wallet>`. What are my lending returns on GONDI? | `get_lender_returns` |
 | 15 | I'm wallet `<your wallet>`. Which of my GONDI loans expire in the next 7 days? | `list_borrower_loans` |
 | 16 | I'm wallet `<your wallet>`. Which of my GONDI loans should I renegotiate? | `list_borrower_loans` |
 | 17 | I'm wallet `<your wallet>`. What good borrowing opportunities do I have on GONDI? | `list_borrowing_opportunities` |
