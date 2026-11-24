@@ -56,6 +56,7 @@ The tools listed are the ones a good answer calls.
 | 27 | If I accept the top bid on Milady #1234 on GONDI, what do I keep? | `search_gondi`, `get_nft_market` |
 | 28 | What fees does GONDI charge to buy, sell or buy with a loan? | `get_lending_guide` |
 | 29 | I'm wallet `<your wallet>`. Which of my GONDI loans as a lender come due soonest, and how risky are they? | `list_lender_loans` |
+| 30 | What's the lowest daily top bid on Milady Maker in the last 90 days on GONDI? | `search_gondi`, `get_top_bid_history` |
 
 Found a wrong answer? [Open an issue](https://github.com/gondixyz/mcp/issues/new/choose)
 with the question number and what the assistant said.

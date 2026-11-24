@@ -1,5 +1,7 @@
 # GONDI MCP Server
 
+[![GONDI MCP connector](https://glama.ai/mcp/connectors/xyz.gondi/mcp/badges/score.svg)](https://glama.ai/mcp/connectors/xyz.gondi/mcp)
+
 [GONDI](https://www.gondi.xyz) is an NFT marketplace with peer-to-peer lending
 built in. On Ethereum, Hyperliquid (HyperEVM) and Robinhood Chain you buy, sell,
 list and bid on NFTs, and borrow or lend against them.
@@ -178,7 +180,7 @@ README and changes whenever they change.
 
 ## Tools
 
-The server offers 20 tools. Tools that take a slug get it from `search_gondi`
+The server offers 22 tools. Tools that take a slug get it from `search_gondi`
 rather than guessing it. Wallet tools take an address, a GONDI username or an ENS
 name. Chains are `ethereum`, `hyperliquid` and `robinhood`; currencies are
 `WETH`, `USDC`, `WHYPE`, `HUSDC`, `RWETH` and `USDG`. Your client shows each
@@ -199,9 +201,14 @@ tool's full description and input schema.
 | `list_cheapest_for_sale` | The cheapest NFTs for sale from a collection or by an artist, with the page to buy each. |
 | `list_recent_sales` | The latest sales of a collection or one NFT, with price, marketplace, buyer and seller, and the period's min, median and max price. |
 | `get_floor_price_history` | How a collection's floor moved over 7 to 365 days, one point a day, with the change in percent. |
+| `get_top_bid_history` | How a collection's top collection bid moved over 7 to 365 days, one point a day as its Insights tab charts it, with the change in percent and the period's lowest daily top bid (each day's last hourly sample) and its day. |
 | `list_top_collections` | The top and trending collections, by volume, sales, trending, market cap or floor change. |
 
-Every listing and bid the market tools answer carries `gondi_fee_percent`.
+Every listing and bid the market tools answer carries `gondi_fee_percent`, the
+seller's GONDI fee, and `marketplace_fee_percent`, the fee its own marketplace
+takes from the seller: GONDI's on a GONDI order, OpenSea's on an OpenSea order,
+and `null` for a marketplace whose fee the server does not know. Neither is a
+creator royalty.
 
 ### Lending
 
@@ -209,7 +216,7 @@ Every listing and bid the market tools answer carries `gondi_fee_percent`.
 | --- | --- |
 | `get_lending_market_overview` | The whole lending market in USD: open principal, interest paid and accruing, volume and APRs of new loans. |
 | `get_supported_markets` | The chains and currencies GONDI lends in, the loan contract on each chain, accepted durations and the protocol fee. |
-| `get_lending_guide` | How lending on GONDI works, step by step, with its risks and fees. |
+| `get_lending_guide` | How lending on GONDI works, step by step, with its risks, and the fees GONDI charges to sell, buy, buy with a loan and sell and repay, against OpenSea's. |
 | `list_lending_opportunities` | Collections borrowers take loans against, ranked by open principal, loans, offers or volume. |
 | `get_collection_lending_stats` | How much is lent against a collection (outstanding, all time and over 30 days), its open loans, repayment rate and the ranges of its loan terms. |
 | `list_loan_offers` | Active loan offers: principal, APR and duration; sorted by lowest APR, the cheapest loan a borrower can take. |
@@ -245,8 +252,11 @@ The tools answer GONDI's marketplace fees, as of November 2026:
 - Buying with a loan adds 2.0% to the price, paid by the buyer. Selling an NFT
   that is collateral in a loan to repay it (sell and repay) costs the seller
   2.0%.
-- CryptoPunks pay no GONDI sale fee.
+- CryptoPunks pay no GONDI sale fee; every other collection pays the same
+  GONDI rates.
 - Buying an OpenSea listing through GONDI costs the same as on OpenSea.
+- Accepting an OpenSea bid through GONDI costs the seller OpenSea's 1.0%
+  marketplace fee and no GONDI fee.
 
 ## Example questions
 
