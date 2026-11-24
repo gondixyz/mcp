@@ -55,6 +55,7 @@ The tools listed are the ones a good answer calls.
 | 26 | Where do I pay the lowest fees to sell a Fidenza, GONDI or OpenSea? | `search_gondi`, `get_collection_market` |
 | 27 | If I accept the top bid on Milady #1234 on GONDI, what do I keep? | `search_gondi`, `get_nft_market` |
 | 28 | What fees does GONDI charge to buy, sell or buy with a loan? | `get_lending_guide` |
+| 29 | I'm wallet `<your wallet>`. Which of my GONDI loans as a lender come due soonest, and how risky are they? | `list_lender_loans` |
 
 Found a wrong answer? [Open an issue](https://github.com/gondixyz/mcp/issues/new/choose)
 with the question number and what the assistant said.
