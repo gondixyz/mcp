@@ -65,6 +65,9 @@ offers and lenders. The server has 20 tools, all of them read-only.
 - **Amounts are whole tokens**, not wei: `2.17` next to `currency_symbol`
   `ETH` is 2.17 ETH. USD values are dollars and are `null` when a rate is
   unavailable. Rates are percent, durations are days.
+- **Decimal numbers are rounded to six significant digits**, and never below
+  whole units (`1.02279`, `0.000830123`, `27612346.0`): figures to read, not
+  to sign. Ids, addresses, token ids, slugs and timestamps are exact.
 - **A loan offer with a `token_id` is for that NFT only.** Collection offers
   are the ones any NFT of the collection can take.
 - **Sell or borrow is the user's call.** State both figures and the trade-off;
@@ -106,7 +109,8 @@ curl -sS -X POST https://api.gondi.xyz/mcp \
 ```
 
 The answer is JSON. `result.structuredContent` holds the data as an object, and
-`result.content[0].text` holds the same data as a JSON string:
+`result.content[0].text` holds the same data as a JSON string on one line,
+without whitespace:
 
 ```json
 {
@@ -172,12 +176,13 @@ out unless the user asks for more or fewer rows.
 | `list_loan_offers` | `collection_slug`, `offer_type` (`CollectionOffer`, `SingleNFTOffer`), `chain`, `currency`, `min_apr_percent`, `sort_by` (`APR_BPS`, `PRINCIPAL_AMOUNT`, `AVAILABLE_PRINCIPAL_AMOUNT`, `DURATION`, `CREATED_DATE`; default `APR_BPS`), `order` (`DESC`, `ASC`; default `DESC`), `limit` (1 to 25, default 10) | Active loan offers: principal, APR, duration and the page where a borrower takes each. |
 | `get_top_lenders` | **`metric`** (`OUTSTANDING_PRINCIPAL`, `EARNINGS`, `LOWEST_DEFAULT_RATE`, `NET_EAPR`), `period` (`LAST_30_DAYS`, `LAST_90_DAYS`, `LAST_180_DAYS`; default `LAST_90_DAYS`), `currency`, `limit` (1 to 25, default 10) | The leading lenders with open principal, earnings, net APR and default rate. |
 | `get_lender_returns` | **`wallet`**, `currency` (every currency the wallet lent in if unset) | One lender's record per currency: principal lent, net profit, net APR, defaults and open positions. |
+| `list_lender_loans` | **`wallet`**, `status` (`OPEN`, `DEFAULTED`, `CLOSED`; default `OPEN`), `limit` (1 to 25, default 10), `offset` (the previous answer's `next_offset`) | A lender's loans one by one: principal, APR, due date, borrower, interest earned and still due, and the collection's floor and top bid with the loan-to-floor ratio, with a summary over every matching loan. `CLOSED` says whether each was repaid, refinanced or renegotiated away, foreclosed or auctioned. |
 
 ### Borrowing
 
 | Tool | Arguments | Answers |
 | --- | --- | --- |
-| `list_borrower_loans` | **`wallet`**, `expiring_within_days`, `sort_by` (`DUE_DATE`, `REFINANCE_SAVING`; default `DUE_DATE`), `limit` (1 to 25, default 10), `offset` (the previous answer's `next_offset`) | A borrower's open loans: due dates, repayment due, and the renegotiation or market offers that could make them cheaper, with a summary over every matching loan. |
+| `list_borrower_loans` | **`wallet`**, `expiring_within_days`, `sort_by` (`DUE_DATE`, `REFINANCE_SAVING`; default `DUE_DATE`), `limit` (1 to 25, default 10), `offset` (the previous answer's `next_offset`) | A borrower's open loans: due dates, repayment due, and the renegotiation or market offers that could make them cheaper, with a summary over every matching loan. A loan names its NFT by `collection_slug` and `token_id`; `get_nft_market` answers that NFT's `contract_address` and `chain`. |
 | `list_borrowing_opportunities` | **`wallet`**, `currency`, `sort_by` (`PRINCIPAL`, `APR`; default `PRINCIPAL`), `limit` (1 to 25, default 10) | The NFTs a wallet holds outside a loan, with the largest offer each can take today. NFTs sharing an offer come as one row with `fundable_count`, how many of them it can fund. |
 | `get_borrow_quote` | **`collection_slug`**, **`token_id`**, `currency` | How much one NFT can borrow now: its largest offer and its cheapest-APR offer. |
 | `get_buy_with_loan_quote` | **`collection_slug`**, **`token_id`** | What buying a listed NFT with a loan costs: upfront payment, the loan's terms and repayment, and the fee. `unavailable_reason` says why when there is no quote. |
@@ -274,6 +279,7 @@ For "which loans should I renegotiate", call `list_borrower_loans` with
 {"name": "get_collection_lending_stats", "arguments": {"slug": "pudgypenguins"}}
 {"name": "get_top_lenders", "arguments": {"metric": "EARNINGS", "period": "LAST_30_DAYS"}}
 {"name": "get_lender_returns", "arguments": {"wallet": "vitalik.eth"}}
+{"name": "list_lender_loans", "arguments": {"wallet": "vitalik.eth"}}
 ```
 
 Call `get_lending_guide` before explaining how lending works, and

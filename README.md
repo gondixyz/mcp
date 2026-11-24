@@ -215,6 +215,7 @@ Every listing and bid the market tools answer carries `gondi_fee_percent`.
 | `list_loan_offers` | Active loan offers: principal, APR and duration; sorted by lowest APR, the cheapest loan a borrower can take. |
 | `get_top_lenders` | The leading lenders over 30, 90 or 180 days, with open principal, earnings, net APR and default rate. |
 | `get_lender_returns` | One lender's record per currency: principal lent, net profit, net APR, defaults and open positions. |
+| `list_lender_loans` | A lender's loans one by one: open ones due soonest first with the interest still due and the collection's floor and top bid, defaulted ones, and how the closed ones ended. |
 
 ### Borrowing
 
@@ -284,6 +285,10 @@ so you can reproduce them.
 - **No API key.** Requests are rate-limited per IP address.
 - **Live data.** Answers come from GONDI's public data at the moment of the
   call.
+- **Rounded figures.** Amounts, USD values, rates and durations are decimal
+  numbers rounded to six significant digits, and never below whole units. Ids,
+  addresses, token ids and timestamps are exact. A tool's text is its JSON on
+  one line, the same values as its structured content.
 - **Not financial advice.** Suggestions are based on market data only. Buying,
   borrowing and lending against NFTs carry risk: a loan not repaid by its expiry
   defaults and the borrower loses the NFT.
